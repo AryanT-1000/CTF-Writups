@@ -103,17 +103,17 @@ At the very end of the Notes are the Files Required for custom fields extraction
 *Once the log data is flowing in correctly and the fields have been extracted, it's time to begin your analysis. Using the available data, apply your skills to uncover what's happening on the network!*
 
 Q: **Domain appeared ?** : Cybertees.THM
-Q:** How many `Username` we got ? and who is the Most active User on the network ?** :
+Q: **How many** `Username` **we got ? and who is the Most active User on the network ?** :
 <p align='center'>
   <img src='./Images/Pasted%20image%2020260504013750.png'>
 </p>
 
-Q:** How many `URI` fields we got ? and how many individual `/products` pages appear ?:**
+Q:**How many** `URI` **fields we got ? and how many individual** `/products` **pages appear ?:**
 <p align='center'>
   <img src='./Images/Pasted%20image%2020260504011143.png'>
 </p>
 
-Q:** What is the only `URI` field value found in the event data without a file extension? **: /sales/
+Q:**What is the only** `URI` **field value found in the event data without a file extension?**: /sales/
 
 Q: **How many unique IP ranges are represented in the observed network traffic?** 
 Answer:  below SPL query gives
@@ -123,7 +123,7 @@ index=main
 | stats dc(ip_range) AS unique_ip_ranges values(ip_range) AS ip_ranges
 ```
 
-OUTPUT:
+**OUTPUT:**
 ``` 
 	unique_ip_ranges	: 5
 	ip_ranges: 
@@ -136,7 +136,7 @@ OUTPUT:
 
 In above output, There are actually 3 ranges here not 5. => 192.168 , 172.16 and 10.0 range. You can fix this SPL Query
 
-Q:** Which user accessed the `secret-document.pdf` on your client's server?**: 
+Q:**Which user accessed the** `secret-document.pdf` **on your client's server?**: 
 Answer: (use SPL to search this.)
 
 ---
