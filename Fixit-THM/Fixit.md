@@ -30,7 +30,7 @@ We also see that in Splunk **Search and Reporting** section shows the event entr
 
 That is probably because Splunk is breaking the event after the new line `\n` from the binary OR is must be using some default buffer. (🤔 idk )
 
-(Sidenote: while restarting the Splunk server during Phase 2 of the challenge you will likely see the `Error in savedsearches.conf- Invalid key in stanza`. don't worry it's not causing any issue with the original challenge.)
+(**Sidenote:** while restarting the Splunk server during Phase 2 of the challenge you will likely see the `Error in savedsearches.conf- Invalid key in stanza`. don't worry it's not causing any issue with the original challenge.)
 
 Answering questions 1 and 2 after viewing inputs.conf file we notice the `source_type` to use for props.conf, i.e `network_logs`
 
@@ -54,7 +54,7 @@ BREAK_ONLY_BEFORE = \[Network-log\]:
 ```
 - Paste in the following entry and restart Splunk with `/opt/splunk/bin/splunk restart`
 
-Answer for question 3 - 4 above. (Test the regex with regex101.com and set the option gm for "global, multi line")
+Answer for question 3 - 4 above. (Test the regex with [regex101.com](https://regex101.com) and set the option gm for "global, multi line")
 
 ---
 ## Phase 2: Extracting Custom Fields
@@ -87,7 +87,7 @@ Mexico at: Mon Dec  1 10:13:48 2025
 
 Answer: Tested on [regex101](https://regex101.com)
 ```c
-// Some Regex correction by given by AI
+// Some Regex correction suggested by AI
 // later removed the Date regex bcz not needed...
 [network_custom_fields]
 REGEX = \[Network-log\]:\sUser\s+named\s+(\w+\s+\w+)\s+from\s+(\w+)\sdepartment\s+accessed\s+the\s+resource\s+(\S+?)\/(\S+)\s+from\s+the\s+source\s+IP\s+(\d+\.\d+\.\d+\.\d+)\s+and\s+country\s+([A-Za-z\s]+?)\s+at:
@@ -102,20 +102,20 @@ At the very end of the Notes are the Files Required for custom fields extraction
 
 *Once the log data is flowing in correctly and the fields have been extracted, it's time to begin your analysis. Using the available data, apply your skills to uncover what's happening on the network!*
 
-Q: Domain appeared ? : Cybertees.THM
-Q: How many `Username` we got ? and who is the Most active User on the network ? :
+Q: **Domain appeared ?** : Cybertees.THM
+Q:** How many `Username` we got ? and who is the Most active User on the network ?** :
 <p align='center'>
   <img src='./Images/Pasted%20image%2020260504013750.png'>
 </p>
 
-Q: How many `URI` fields we got ? and how many individual `/products` pages appear ?:
+Q:** How many `URI` fields we got ? and how many individual `/products` pages appear ?:**
 <p align='center'>
   <img src='./Images/Pasted%20image%2020260504011143.png'>
 </p>
 
-Q: What is the only `URI` field value found in the event data without a file extension? : /sales/
+Q:** What is the only `URI` field value found in the event data without a file extension? **: /sales/
 
-Q: How many unique IP ranges are represented in the observed network traffic? 
+Q: **How many unique IP ranges are represented in the observed network traffic?** 
 Answer:  below SPL query gives
 ```c
 index=main
@@ -124,17 +124,19 @@ index=main
 ```
 
 OUTPUT:
+``` 
 	unique_ip_ranges	: 5
 	ip_ranges: 
-	10.0.0.0/24
-	172.16.0.0/24
-	192.168.0.0/24
-	192.168.1.0/24
-	192.168.2.0/24
+		10.0.0.0/24
+		172.16.0.0/24
+		192.168.0.0/24
+		192.168.1.0/24
+		192.168.2.0/24
+```
 
-There are actually 3 ranges here not 5. 192.168 , 172.16 and 10.0 range. You can fix this SPL Query
+In above output, There are actually 3 ranges here not 5. => 192.168 , 172.16 and 10.0 range. You can fix this SPL Query
 
-Q: Which user accessed the `secret-document.pdf` on your client's server?: 
+Q:** Which user accessed the `secret-document.pdf` on your client's server?**: 
 Answer: (use SPL to search this.)
 
 ---
