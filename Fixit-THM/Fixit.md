@@ -1,4 +1,4 @@
-![[Pasted image ./Images/20260503004701.png|200x160]]
+![[./Images/Pasted image 20260503004701.png|200x160]]
 
 
 # Scenario:
