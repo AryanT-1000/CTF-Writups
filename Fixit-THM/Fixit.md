@@ -1,4 +1,4 @@
-![Logo](Fixit-THM/Images/Pasted image 20260503004701.png)
+![Logo](Fixit-THM/Images/Pasted%20image%2020260503004701.png)
 
 
 # Scenario:
