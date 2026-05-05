@@ -1,5 +1,5 @@
 <p align='left'>
-  <img src='Fixit-THM/Images/Pasted%20image%2020260503004701.png'>
+  <img src='./Images/Pasted%20image%2020260503004701.png'>
 </p>
 
 
