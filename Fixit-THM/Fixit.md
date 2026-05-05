@@ -1,5 +1,5 @@
 <p align='left'>
-  <img src='./Images/Pasted%20image%2020260503004701.png'>
+  <img src='./Images/Pasted%20image%2020260503004701.png' style="height: 200px; width: 160px">
 </p>
 
 
