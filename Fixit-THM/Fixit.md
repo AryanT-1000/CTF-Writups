@@ -1,4 +1,4 @@
-<p align='left'>
+<p align='center'>
   <img src='./Images/Pasted%20image%2020260503004701.png' style="width: 200px;height: 200px">
 </p>
 
