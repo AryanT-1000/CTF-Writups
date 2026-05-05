@@ -81,7 +81,9 @@ Germany at: Mon Dec  1 10:13:42 2025
 Mexico at: Mon Dec  1 10:13:48 2025
 ```
 
-![[Pasted image 20260503004040.png]]
+<p align='center'>
+  <img src='./Images/Pasted%20image%2020260503004040.png'>
+</p>
 
 Answer: Tested on [regex101](https://regex101.com)
 ```c
@@ -102,11 +104,14 @@ At the very end of the Notes are the Files Required for custom fields extraction
 
 Q: Domain appeared ? : Cybertees.THM
 Q: How many `Username` we got ? and who is the Most active User on the network ? :
-![[Pasted image 20260504013750.png|500x400]]
+<p align='center'>
+  <img src='./Images/Pasted%20image%2020260504013750.png'>
+</p>
 
 Q: How many `URI` fields we got ? and how many individual `/products` pages appear ?:
-
-![[Pasted image 20260504011143.png|500x400]]
+<p align='center'>
+  <img src='./Images/Pasted%20image%2020260504011143.png'>
+</p>
 
 Q: What is the only `URI` field value found in the event data without a file extension? : /sales/
 
