@@ -1,4 +1,4 @@
-!(./Images/Pasted image 20260503004701.png)
+!(Fixit-THM/Images/Pasted image 20260503004701.png)
 
 
 # Scenario:
