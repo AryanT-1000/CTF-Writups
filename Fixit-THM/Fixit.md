@@ -134,7 +134,7 @@ index=main
 		192.168.2.0/24
 ```
 
-In above output, There are actually 3 ranges here not 5. => 192.168 , 172.16 and 10.0 range. You can fix this SPL Query
+In above output, There are actually 3 ranges here not 5. => `192.168` , `172.16` and `10.0` range. You can fix this SPL Query
 
 Q:**Which user accessed the** `secret-document.pdf` **on your client's server?**: 
 Answer: (use SPL to search this.)
@@ -163,6 +163,7 @@ INDEXED = true
 ```
 
 #### local/props.conf
+Later Added `SHOULD_LINEMERGE` stanza 
 ```c
 [network_logs]
 SHOULD_LINEMERGE = true
