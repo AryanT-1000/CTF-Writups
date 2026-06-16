@@ -1,0 +1,350 @@
+title: mshta execution SUS
+id: # Put id form any online uuid generator 
+status: Experimental
+description: Execution of malicious HTA payload from a phishing link.
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'  
+    ParentImage|endswith: "chrome.exe"
+    Image|endswith: "mshta.exe"
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - ParentImage
+  - CommandLine
+  - User
+  - ComputerName
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Legitimate enterprise HTA applications
+  - Administrative scripts using mshta.exe
+  - Software installers launching HTA files
+
+level: medium #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.defense_evasion #MITRE Tactic should be Stealth  => attack.stealth.System_Binary_Proxy_Execution.Mshta
+  - attack.t1218.005 #MITRE Technique
+  
+#####################################################################
+
+title: CertUtils LOLBINS
+id: # Put id form any online generator uuid
+status: Experimental
+description: Execution of Certutil tool to download Netcat binary.
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'   
+    Image|endswith: "\\certutil.exe"
+    CommandLine|contains: 
+     - ' -urlcache '
+     - ' -split '
+     - ' -f '
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields:  #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - ComputerName
+
+falsepositives: 
+  - Administrative certificate management operations 
+  - Legitimate file retrieval using certutil
+  - Enterprise automation or deployment scripts 
+
+level: medium #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.command_and_control #MITRE Tactic
+  - attack.defense_evasion #MITRE Tactic
+  - attack.t1105 #MITRE Technique
+
+###########################################################################
+
+title: Netcat reverse shell
+id: # Put id form any online generator uuid
+status: Experimental
+description: Netcat execution to establish a reverse shell.
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection1:
+    EventID: '1'
+    Image|endswith: '\nc.exe'
+    CommandLine|contains|all: 
+     - 'nc.exe '
+     - ' -e '
+     - ' cmd.exe '
+  selection2:
+    Hashes|contains: "523613A7B9DFA398CBD5EBD2DD0F4F38" 
+  condition: selection1 or selection2 #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - ComputerName
+  - Hashes
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Authorized penetration testing activity
+  - Internal red team operations
+  - Security research or lab environments
+
+level: high #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.command_and_control #MITRE Tactic
+  - attack.execution #MITRE Tactic
+  - attack.t1059 #MITRE Technique
+  
+#############################################################################
+
+title: Privilege escalation PowerUp
+id: # Put id form any online generator uuid
+status: Experimental
+description: Enumeration of privilege escalation vectors through PowerUp.ps1.
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains|all:
+     - 'iex(new-object net.webclient).'
+     - ' Invoke-AllChecks;'
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - CurrentDirectory
+  - IntegrityLevel
+  - Hashes
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Authorized penetration testing
+  - Internal red team assessments
+  - Security research or lab environments
+
+level: high #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.privilege_escalation #MITRE Tactic
+  - attack.discovery #MITRE Tactic
+  - attack.execution #MITRE Tactic
+  - attack.t1059.001 #MITRE Technique
+  
+###############################################################################
+
+title: Service Binary Modification
+id: # Put id form any online generator uuid
+status: Experimental
+description: Abused service modification privileges to achieve System privileges.
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'
+    Image|endswith: '\sc.exe'
+    CommandLine|contains|all:
+     - ' binPath= '
+     - ' config '
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - IntegrityLevel
+  - CurrentDirectory
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Legitimate administrative service configuration changes
+  - Software installation activities
+  - Enterprise deployment tools
+
+level: high #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.privilege_escalation #MITRE Tactic
+  - attack.persistence #MITRE Tactic
+  - attack.t1574.011 #MITRE Technique
+  - attack.t1543.003 #MITRE Technique
+  
+################################################################################
+
+title: RunOnce Persistance
+id: # Put id form any online generator uuid
+status: Experimental
+description: Registry Key modification to maintain Persistance
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'
+    Image|endswith: '\reg.exe'
+    CommandLine|contains|all:
+     - ' add '
+     - ' REG_SZ '
+     - ' /v '
+     - ' /t '
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - ComputerName
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Legitimate software installations
+  - Application auto-start configuration changes
+  - Enterprise management tools
+  - Security software updates
+
+level: medium #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.persistence #MITRE Tactic
+  - attack.t1547.001 #MITRE Technique
+  
+####################################################################################
+  
+title: 7z Archive Collection
+id: # Put id form any online generator uuid
+status: Experimental
+description: Collected sensitive data by archiving via 7-zip. (compress before sending out)
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'
+    Image|endswith: '\7z.exe'
+    CommandLine|contains:
+     - ' a '
+     - ' -p '
+     
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - ComputerName
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Legitimate backup operations
+  - Secure file transfer preparation
+  - Administrative archive creation
+  - Software packaging or deployment activities
+
+level: medium #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.collection #MITRE Tactic
+  - attack.exfiltrationue #MITRE Tactic
+  - attack.t1560.001 #MITRE Technique
+
+
+#####################################################################################
+
+title: cURL Data Exfiltration
+id: # Put id form any online generator uuid
+status: Experimental
+description: To Detect exfiltrated of sensitive data through cURL binary.
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '1'
+    Image|endswith: '\curl.exe'
+    CommandLine|contains:
+     - ' -d '
+     - ' http'
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - ComputerName
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Legitimate API interactions
+  - Administrative automation scripts
+  - Software deployment or monitoring tools
+  - Development and testing activities
+
+level: medium #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.exfiltration #MITRE Tactic
+  - attack.command_and_control #MITRE Tactic
+  - attack.t1041 #MITRE Technique
+
+######################################################################################
+
+title: ransomware file encryption
+id: # Put id form any online generator uuid
+status: Experimental
+description: Detection for Executed ransomware with huntme as the file extension. 
+author: PhantomHertz
+date: #When was the rule written.
+modified: #When was it updated
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: '11'
+    TargetFilename|endswith: ".huntme"
+  condition: selection #Action to be taken. Can use condition operators such as OR, AND, NOT, 
+fields: #List of associated fields that are important for the detection
+  - TargetFilename
+  - Image
+  - ProcessGuid
+  - ProcessId
+  - User
+  - CreationUtcTime
+
+falsepositives: #Any possible false positives that could trigger the rule.
+  - Malware analysis environments
+  - Security testing or ransomware simulations
+  - Intentional file renaming for testing purposes
+
+
+level: critical #Severity level of the detection rule.
+tags: #Associated TTPs from MITRE ATT&CK
+  - attack.impact #MITRE Tactic
+  - attack.t1486 #MITRE Technique
