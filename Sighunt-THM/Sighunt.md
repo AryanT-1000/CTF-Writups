@@ -472,7 +472,7 @@ After trying a few times, I thought maybe it was checking for the literal string
 
 ```yml
 title: Suspicious File Encryption Activity
-id: 12312-454645-3233
+id: # random
 status: Experimental
 description: Detects files being created or renamed with uncommon extensions, which may indicate encryption activity.
 author: PhantomHertz
