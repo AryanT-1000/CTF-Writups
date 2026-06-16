@@ -1,6 +1,6 @@
-
-![[Sighunt_logo.png|200x200]]
-
+<p align='center'>
+  <img src='./Images/Sighunt_logo.png' style="width: 200px;height: 200px">
+</p>
 Room Link: https://tryhackme.com/room/sighunt
 
 ## About the Challenge
@@ -62,7 +62,9 @@ _Based on the given incident report, the Incident Responders discovered the foll
 ## Task 2: Hunting Incident
 Here's How the interface works.
 
-![[Sighunt-interface.png]]
+<p align='center'>
+  <img src='./Images/Sighunt-interface.png'>
+</p>
 
 There are two sections:  
 
@@ -462,7 +464,9 @@ From the given **"Rule Creation Standard"**, this rule uses the required detecti
 
 A strange thing I found about the last challenge is that even after I wrote the rule correctly according to the **"Rule Creation Standards"**, it was still giving the error **"String: ransom"**.  
 
-![[ransom_rule_error.png]]
+<p align='center'>
+  <img src='./Images/ransom_rule_error.png'>
+</p>
 
 After trying a few times, I thought maybe it was checking for the literal string **"ransom"**, so I changed and removed all the ransom-related words.
 
@@ -487,7 +491,8 @@ fields:
   - TargetFilename
 ```
 
-
-![[ransom_challenge.png]]
+<p align='center'>
+  <img src='./Images/ransom_challenge.png'>
+</p>
 
 ---
