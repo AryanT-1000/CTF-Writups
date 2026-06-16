@@ -120,7 +120,7 @@ This command downloads a malicious binary (`nc.exe`) from a remote server and sa
 `certutil -urlcache -f http://example.com/legitfile.txt C:\Users\victim\Documents\legitfile.txt` ✅  
 Here, `certutil` is being used to download a legitimate text file for administrative or troubleshooting purposes.  
 
-**Why `--split` is Malicious Here**
+**Why `--split` is Malicious Here:**
 The `--split` flag instructs **certutil** to break the downloaded file into smaller chunks before writing it to disk. While this functionality can be useful in legitimate scenarios (e.g., handling large files), attackers abuse it to:  
 - **Evade detection**: Splitting the payload into chunks makes it harder for security tools to identify the file as malicious during transfer.  
 - **Reassemble malware**: Once downloaded, the chunks are combined into a complete executable (like `nc.exe`), which is then run by the attacker.  
