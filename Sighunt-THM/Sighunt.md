@@ -495,4 +495,5 @@ fields:
   <img src='./Images/ransom_challenge.png'>
 </p>
 
+here is the edited/polished version of all the rules mentioned till now with the false positive and mitre attack tatics defined: <a href="./Sighunt.yml"> Sighunt.yml </a> 
 ---
