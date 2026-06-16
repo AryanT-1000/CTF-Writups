@@ -9,7 +9,7 @@ The provided Room falls under the category of Detection Engineering (Difficulty:
 
 To test the Sigma rules, an interface called "Sighunt" is provided. You can connect to it using a VPN or an Attack Box. For reference, to aid in each rule creation, the "Sighunt" interface also provides the respective logs (the logs that indicate the breach).
 Also, keep TryHackMe's Sigma cheatsheet from the previous room https://tryhackme.com/room/sigma, it will come in handy.
-##### Readers NOTE: The paragraphs in *italics* and the "(given) Sections" are taken word-for-word from the challenge.
+##### Readers NOTE: The paragraphs in *italics* and the "(given)" Sections are taken word-for-word from the challenge.
 
 ## Task 1 : Introduction
 ### Provided Scenario
