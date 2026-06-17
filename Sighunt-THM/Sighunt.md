@@ -170,19 +170,23 @@ here's the command executed by attacker `CommandLine : "C:\Users\victim\AppData\
 
 - **Selection2**:  
   - Detects a known malicious hash (`523613A7B9DFA398CBD5EBD2DD0F4F38`) associated with Netcat binaries often used in attacks. From the Virustotal code Insights says: <br>
-  This binary is a well-known version of Netcat (v1.12), a network utility often categorized as a "Hacktool". This is confirmed by strings like "[v1.12 NT http[://]eternallybored[.]org/misc/netcat/]" and the detailed help text. Its capabilities include creating listening sockets (listen, accept), connecting to remote hosts (connect), and port scanning. The most critical feature is its ability to bind an executable to a listening port using the -e command-line argument, which is a classic technique for creating a remote command shell (backdoor). While it can be used for legitimate network administration, its frequent use in malicious activities makes its presence on a system highly suspicious.  
+
+This binary is a well-known version of Netcat (v1.12), a network utility often categorized as a "Hacktool". This is confirmed by strings like "[v1.12 NT http[://]eternallybored[.]org/misc/netcat/]" and the detailed help text. Its capabilities include creating listening sockets (listen, accept), connecting to remote hosts (connect), and port scanning. The most critical feature is its ability to bind an executable to a listening port using the -e command-line argument, which is a classic technique for creating a remote command shell (backdoor). While it can be used for legitimate network administration, its frequent use in malicious activities makes its presence on a system highly suspicious.  
 
 - **Condition**:  
   - The rule triggers if **either Selection1 or Selection2** is true, ensuring detection by behavior or by known malicious file hash.
+
 **Malicious Behavior** ❌
 Netcat (`nc.exe`) is being abused to establish a **reverse shell**.  
 - The attacker runs Netcat with `-e cmd.exe`, which allows them to remotely execute commands on the victim machine.  
 - This is a classic post-exploitation technique used to gain interactive access and control.  
-- The binary is placed in the `Temp` directory, a common tactic for staging malicious tools.  
+- The binary is placed in the `Temp` directory, a common tactic for staging malicious tools.
+
 **Benign Behavior** ✅
 Netcat itself is a legitimate utility often used by administrators for **network troubleshooting** (e.g., testing connections, transferring files).  
 - Normal usage might include commands like `nc.exe -l -p 4444` to listen on a port, or simple file transfers without the `-e` flag.  
-- The presence of `-e cmd.exe` is what makes this case malicious, since it directly enables remote shell execution.  
+- The presence of `-e cmd.exe` is what makes this case malicious, since it directly enables remote shell execution.
+ 
 **Key Point**
 This rule is designed to be **generic yet precise**:  
 - It detects Netcat reverse shell attempts by monitoring both **command-line arguments** and **known malicious hashes**.  
