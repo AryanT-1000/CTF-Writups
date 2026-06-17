@@ -169,9 +169,8 @@ here's the command executed by attacker `CommandLine : "C:\Users\victim\AppData\
     - `cmd.exe` → specifies the Windows command shell, enabling remote command execution.  
 
 - **Selection2**:  
-  - Detects a known malicious hash (`523613A7B9DFA398CBD5EBD2DD0F4F38`) associated with Netcat binaries often used in attacks. From the Virustotal code Insights says: <br>
-
-This binary is a well-known version of Netcat (v1.12), a network utility often categorized as a "Hacktool". This is confirmed by strings like "[v1.12 NT http[://]eternallybored[.]org/misc/netcat/]" and the detailed help text. Its capabilities include creating listening sockets (listen, accept), connecting to remote hosts (connect), and port scanning. The most critical feature is its ability to bind an executable to a listening port using the -e command-line argument, which is a classic technique for creating a remote command shell (backdoor). While it can be used for legitimate network administration, its frequent use in malicious activities makes its presence on a system highly suspicious.  
+  - Detects a known malicious hash (`523613A7B9DFA398CBD5EBD2DD0F4F38`) associated with Netcat binaries often used in attacks.
+  - From the Virustotal code Insights says: This binary is a well-known version of Netcat (v1.12), a network utility often categorized as a "Hacktool". This is confirmed by strings like "[v1.12 NT http[://]eternallybored[.]org/misc/netcat/]" and the detailed help text. Its capabilities include creating listening sockets (listen, accept), connecting to remote hosts (connect), and port scanning. The most critical feature is its ability to bind an executable to a listening port using the -e command-line argument, which is a classic technique for creating a remote command shell (backdoor). While it can be used for legitimate network administration, its frequent use in malicious activities makes its presence on a system highly suspicious.  
 
 - **Condition**:  
   - The rule triggers if **either Selection1 or Selection2** is true, ensuring detection by behavior or by known malicious file hash.
