@@ -9,7 +9,8 @@
 </p>
 <p align="justify"> Tryhackme Fixit room is a Advanced Splunk SOC L2 Path challenge. In this we have to parse raw incoming log data into format that can be displayed/queried in splunk interface </p>
 </p>
-----
+
+---
 
 <p>
 <h3>Fixit-THM</h3>
@@ -18,4 +19,5 @@
 </p>
 <p align="justify"> Tryhackme Sighunt room is a Detection Engineering SOC L2 Path challenge. In this we have to think as Detection Engineer. We have to Create Sigma Rule according to the given "Rule Creation Standards" and "IoC's", and test each rule in provided sighunt interface  </p>
 </p>
+
 ---
