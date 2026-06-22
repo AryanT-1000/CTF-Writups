@@ -31,7 +31,7 @@
 
 ---
 
-## HackTheBox write-ups
+## Upcomming HackTheBox write-ups
 
   - ElectricBreeze (Part 1 and 2)
   - SalineBreeze (Part 1 and 2)
