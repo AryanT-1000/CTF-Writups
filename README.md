@@ -3,7 +3,7 @@
 ## Tryhackme CTF write-ups
 
 <p>
-<h3>[Fixit-THM](./Fixit-THM/)</h3>
+<h3><a href="./Fixit-THM/">Fixit-THM</a></h3>
 <p align='center'>
   <img src='./Fixit-THM/Images/Pasted%20image%2020260503004701.png' style="width: 100px;height: 100px">
 </p>
@@ -13,7 +13,7 @@
 ---
 
 <p>
-<h3>[Sighunt](./Sighunt-THM/)</h3>
+<h3><a href="./Sighunt-THM/">Sighunt</a></h3>
 <p align='center'>
   <img src='./Sighunt-THM/Images/Sighunt_logo.png' style="width: 100px;height: 100px">
 </p>
